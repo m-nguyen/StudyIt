@@ -11,7 +11,9 @@ import Parse
 
 class BackViewController: UIViewController {
 
+    @IBOutlet var backText: UITextView!
      var selected: String!
+    var cardID: String!
     override func viewDidLoad() {
         super.viewDidLoad()
         print(selected)
@@ -26,30 +28,59 @@ class BackViewController: UIViewController {
     
     
     @IBAction func Save(sender: AnyObject) {
-        //get title
-        
-            //save title to parse
-            let FriendName = PFObject(className: "CardInfo")
-            FriendName.setObject(selected, forKey: "title")
-            FriendName.setObject("back test", forKey: "backstring")
-            
-            FriendName.saveInBackgroundWithBlock {
-                (success: Bool, error:NSError?) -> Void in
+        //get objectID
+        var query = PFQuery(className:"CardInfo")
+        query.getObjectInBackgroundWithId(cardID) {
+            (object, error) -> Void in
+            if error != nil {
+                print(error)
+            } else {
                 
-                if(success)
-                {
-                    //We saved our information
-                    print("Saved Title")
-                    
-                }
-                else
-                {
-                    //there was a problem
-                    print(error)
-                    print("Error: Did Not Save Title")
+                if let object = object {
+                    print("found")
+                    object["backstring"] = "trest123"
+//                    object["backfile"] = "testing2113"
+                    object.saveInBackground()
                 }
             }
+        }
+        print("Saving Back")
+//        
+//        var query = PFQuery(className:"CardInfo")
+//        query.getObjectInBackgroundWithId(cardID) {
+//            (gameScore: PFObject?, error: NSError?) -> Void in
+//            if error != nil {
+//                print(error)
+//            } else if let gameScore = gameScore {
+//                print("found")
+//                gameScore["backstring"] = "testing1234"
+//                gameScore.saveInBackground()
+//            }
+//        }
         
+        
+//            //save title to parse
+//            let FriendName = PFObject(className: "CardInfo")
+//            FriendName.setObject(selected, forKey: "title")
+//            FriendName.setObject(backText, forKey: "backstring")
+//            
+//            FriendName.saveInBackgroundWithBlock {
+//                (success: Bool, error:NSError?) -> Void in
+//                
+//                if(success)
+//                {
+//                    //We saved our information
+//                    print("Saved Title")
+//                    
+//                }
+//                else
+//                {
+//                    //there was a problem
+//                    print(error)
+//                    print("Error: Did Not Save Title")
+//                }
+//            }
+//        
         }
     
 

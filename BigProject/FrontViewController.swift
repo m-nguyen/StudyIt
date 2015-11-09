@@ -9,9 +9,11 @@
 import UIKit
 import Parse
 var cardname = ""
+var ID = ""
 
 class FrontViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
 
+    @IBOutlet var EnteredText: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,7 @@ class FrontViewController: UIViewController,UIImagePickerControllerDelegate, UIN
             //save title to parse
             let FriendName = PFObject(className: "CardInfo")
             FriendName.setObject(cardname, forKey: "title")
+            FriendName.setObject(self.EnteredText.text, forKey: "frontstring")
             
             FriendName.saveInBackgroundWithBlock {
                 (success: Bool, error:NSError?) -> Void in
@@ -44,6 +47,7 @@ class FrontViewController: UIViewController,UIImagePickerControllerDelegate, UIN
                 {
                     //We saved our information
                     print("Saved Title")
+                    ID = FriendName.objectId!
                     
                 }
                 else
@@ -74,6 +78,7 @@ class FrontViewController: UIViewController,UIImagePickerControllerDelegate, UIN
 
             let fvc = segue.destinationViewController as! BackViewController;
             fvc.selected = cardname
+            fvc.cardID = ""
         }
         
     }
